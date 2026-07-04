@@ -1,0 +1,2 @@
+/Users/sahab/developer/tayara/user/android/app/.cxx/RelWithDebInfo/1i3r1p5n/x86_64/CMakeFiles/edit_cache.dir
+/Users/sahab/developer/tayara/user/android/app/.cxx/RelWithDebInfo/1i3r1p5n/x86_64/CMakeFiles/rebuild_cache.dir

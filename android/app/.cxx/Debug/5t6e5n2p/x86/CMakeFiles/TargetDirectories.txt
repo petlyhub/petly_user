@@ -1,0 +1,2 @@
+/Users/sahab/developer/petly/petly_new/user/android/app/.cxx/Debug/5t6e5n2p/x86/CMakeFiles/edit_cache.dir
+/Users/sahab/developer/petly/petly_new/user/android/app/.cxx/Debug/5t6e5n2p/x86/CMakeFiles/rebuild_cache.dir

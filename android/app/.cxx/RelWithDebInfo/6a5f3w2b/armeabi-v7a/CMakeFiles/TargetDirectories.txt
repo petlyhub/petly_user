@@ -1,0 +1,2 @@
+/Users/sahab/developer/petly/petly_new/user/android/app/.cxx/RelWithDebInfo/6a5f3w2b/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/sahab/developer/petly/petly_new/user/android/app/.cxx/RelWithDebInfo/6a5f3w2b/armeabi-v7a/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,2 @@
+/Users/sahab/developer/BigStore/user/android/app/.cxx/RelWithDebInfo/j1nhy6f4/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/sahab/developer/BigStore/user/android/app/.cxx/RelWithDebInfo/j1nhy6f4/armeabi-v7a/CMakeFiles/rebuild_cache.dir
