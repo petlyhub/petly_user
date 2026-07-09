@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:sixam_mart/common/app_session_manager.dart';
 import 'package:sixam_mart/features/auth/controllers/auth_controller.dart';
 import 'package:sixam_mart/features/cart/controllers/cart_controller.dart';
 import 'package:sixam_mart/features/language/controllers/language_controller.dart';
@@ -135,13 +134,12 @@ class _MyAppState extends State<MyApp> {
       }
 
       Get.find<SplashController>().getConfigData(loadLandingData: (GetPlatform.isWeb && AddressHelper.getUserAddressFromSharedPref() == null), fromMainFunction: true);
-
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
+ 
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
@@ -153,7 +151,8 @@ class _MyAppState extends State<MyApp> {
     return GetBuilder<ThemeController>(builder: (themeController) {
       return GetBuilder<LocalizationController>(builder: (localizeController) {
         return GetBuilder<SplashController>(builder: (splashController) {
-          return (GetPlatform.isWeb && splashController.configModel == null) ? const SizedBox() : GetMaterialApp(
+          return (
+            GetPlatform.isWeb && splashController.configModel == null) ? const SizedBox() : GetMaterialApp(
             title: AppConstants.appName,
             debugShowCheckedModeBanner: false,
             navigatorKey: Get.key,
@@ -170,19 +169,19 @@ class _MyAppState extends State<MyApp> {
             transitionDuration: const Duration(milliseconds: 500),
             builder: (BuildContext context, widget) {
               return MediaQuery(data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1)), child: Material(
-                child: Stack(children: [
+                child: Stack(
+                  children: [
                   widget!,
-
                   GetBuilder<SplashController>(builder: (splashController){
                     if(!splashController.savedCookiesData && !splashController.getAcceptCookiesStatus(splashController.configModel != null ? splashController.configModel!.cookiesText! : '')){
                       return ResponsiveHelper.isWeb() ? const Align(alignment: Alignment.bottomCenter, child: CookiesView()) : const SizedBox();
-                    }else{
+                    } else {
                       return const SizedBox();
                     }
-                  })
+                  }),
                 ]),
               ));
-          },
+            },
           );
         });
       });

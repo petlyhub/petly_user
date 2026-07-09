@@ -172,7 +172,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                               Dimensions.fontSizeDefault)),
                                   const SizedBox(
                                       height: Dimensions.paddingSizeExtraSmall),
-                                  Text(
+                                   Text(
                                     'click_one_of_the_option_below'.tr,
                                     style: robotoRegular.copyWith(
                                         fontSize: Dimensions.fontSizeSmall,
@@ -182,7 +182,8 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                       height: Dimensions.paddingSizeLarge),
                                 ])
                           : const SizedBox(),
-                      Row(children: [
+                      Row(
+                        children: [
                         widget.isCashOnDeliveryActive && notHideCod
                             ? Expanded(
                                 child: Padding(
@@ -252,7 +253,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                               )
                             : const SizedBox(),
                       ]),
-                      
+
                       // Row(children: [
                       //   widget.isCashOnDeliveryActive && notHideCod
                       //       ? Expanded(
@@ -335,7 +336,8 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                       //      : const SizedBox(),
                       // ]),
 
-                      Row(children: [
+                      Row(
+                        children: [
                         widget.isCashOnDeliveryActive && notHideCod
                             ? Expanded(
                                 child: Padding(
@@ -419,7 +421,8 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                       ]),
                       const SizedBox(height: Dimensions.paddingSizeLarge),
                       widget.isDigitalPaymentActive && notHideDigital
-                          ? Row(children: [
+                          ? Row(
+                            children: [
                               Text('pay_via_online'.tr,
                                   style: robotoBold.copyWith(
                                       fontSize: Dimensions.fontSizeDefault)),
@@ -508,16 +511,45 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                       const SizedBox(
                                           width: Dimensions.paddingSizeDefault),
                                       Expanded(
-                                        child: Text(
-                                          Get.find<SplashController>()
-                                              .configModel!
-                                              .activePaymentMethodList![index]
-                                              .getWayTitle!,
-                                          style: robotoMedium.copyWith(
-                                              fontSize:
-                                                  Dimensions.fontSizeDefault),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              Get.find<SplashController>()
+                                                  .configModel!
+                                                  .activePaymentMethodList![
+                                                      index]
+                                                  .getWayTitle!,
+                                              style: robotoMedium.copyWith(
+                                                  fontSize: Dimensions
+                                                      .fontSizeDefault),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                            Row(
+                                              spacing: 12,
+                                              children: [
+                                                 Image.asset(
+                                                  'assets/image/mada.png',
+                                                  height: 28,
+                                                ),
+                                                Image.asset(
+                                                  'assets/image/mastercard.webp',
+                                                  height: 24,
+                                                ),
+                                                Image.asset(
+                                                  'assets/image/visa.png',
+                                                  height: 24,
+                                                ),
+                    
+                                                Image.asset(
+                                                  'assets/image/apple_pay.JPG',
+                                                  height: 24,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       CustomImage(
