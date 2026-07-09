@@ -5,6 +5,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:sixam_mart/features/item/controllers/item_controller.dart';
 import 'package:sixam_mart/features/item/domain/models/item_model.dart';
 import 'package:sixam_mart/common/widgets/custom_app_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImageViewerScreen extends StatelessWidget {
   final Item item;
@@ -63,7 +64,10 @@ class ImageViewerScreen extends StatelessWidget {
                       );
                     }
                   },
-                  child: const Icon(Icons.chevron_left_outlined, size: 40),
+                  child: Transform.flip(
+                    flipX: Directionality.of(context) == TextDirection.rtl,
+                    child: const Icon(Icons.chevron_left_outlined, size: 40),
+                  ),
                 ),
               ),
             ) : const SizedBox(),
@@ -86,7 +90,10 @@ class ImageViewerScreen extends StatelessWidget {
                       );
                     }
                   },
-                  child: const Icon(Icons.chevron_right_outlined, size: 40),
+                  child: Transform.flip(
+                    flipX: Directionality.of(context) == TextDirection.rtl,
+                    child: const Icon(Icons.chevron_right_outlined, size: 40),
+                  ),
                 ),
               ),
             ) : const SizedBox(),
