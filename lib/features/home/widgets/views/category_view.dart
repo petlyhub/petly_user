@@ -1,7 +1,10 @@
 import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sixam_mart/features/category/controllers/category_controller.dart';
 import 'package:sixam_mart/features/splash/controllers/splash_controller.dart';
+import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
+import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/common/widgets/custom_image.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +45,7 @@ class _CategoryViewState extends State<CategoryView> {
         }
 
         return SizedBox(
-          height: 280,
+          height: 280.h,
           child: GridView.builder(
             controller: _scrollController,
             scrollDirection: Axis.horizontal,
@@ -54,37 +57,37 @@ class _CategoryViewState extends State<CategoryView> {
             ),
             itemCount: categories.length,
             physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
             itemBuilder: (context, index) {
               final cat = categories[index];
               final name = cat.name ?? '';
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 4.h),
                 child: InkWell(
                   onTap: () {
                     Get.toNamed(RouteHelper.getCategoryItemRoute(cat.id, name));
                   },
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(16.r),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                        height: 90,
-                        width: 90,
+                        height: 90.h,
+                        width: 90.w,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(14),
+                          borderRadius: BorderRadius.circular(14.r),
                           child: CustomImage(
                             image: cat.imageFullUrl ?? '',
                             fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 7),
+                  SizedBox(height: 5.h),
                       Text(
                         name,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: robotoBold.copyWith(fontSize: 11),
+                        style: robotoBold.copyWith(fontSize: 11.sp),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -108,7 +111,7 @@ class CategoryShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 185,
+      height: 185.h,
       child: GridView.builder(
         scrollDirection: Axis.horizontal,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -118,11 +121,11 @@ class CategoryShimmer extends StatelessWidget {
           childAspectRatio: 0.79,
         ),
         itemCount: 8,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
+            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 4.h),
             child: Shimmer(
               duration: const Duration(seconds: 2),
               enabled: true,
@@ -130,17 +133,17 @@ class CategoryShimmer extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    height: 62,
-                    width: 62,
+                    height: 55.h,
+                    width: 62.w,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(14.r),
                       color: Colors.grey[300],
                     ),
                   ),
-                  const SizedBox(height: 7),
+                  SizedBox(height: 5.h),
                   Container(
-                    height: 12,
-                    width: 48,
+                    height: 12.h,
+                    width: 48.w,
                     color: Colors.grey[300],
                   ),
                 ],

@@ -32,6 +32,7 @@ class _ItemThatYouLoveViewState extends State<ItemThatYouLoveView> {
     if(Get.find<ItemController>().recommendedItemList != null){
       _currentPage = Get.find<ItemController>().recommendedItemList!.length > 1 ? 1: 0;
     }
+    print("testttttt");
     _pageController = PageController(initialPage: _currentPage, viewportFraction: 0.8);
   }
 
@@ -79,7 +80,10 @@ class _ItemThatYouLoveViewState extends State<ItemThatYouLoveView> {
                 top: 150, right: 10,
                 child: InkWell(
                   onTap: () => swiperController.next(),
-                  child: Icon(Icons.arrow_forward, color: Theme.of(context).primaryColor),
+                  child: Transform.flip(
+                    flipX: Directionality.of(context) == TextDirection.rtl,
+                    child: Icon(Icons.arrow_forward, color: Theme.of(context).primaryColor),
+                  ),
                 ),
               ),
 
@@ -87,7 +91,10 @@ class _ItemThatYouLoveViewState extends State<ItemThatYouLoveView> {
                 top: 150, left: 10,
                 child: InkWell(
                   onTap: () => swiperController.previous(),
-                  child: Icon(Icons.arrow_back, color: Theme.of(context).primaryColor),
+                  child: Transform.flip(
+                    flipX: Directionality.of(context) == TextDirection.rtl,
+                    child: Icon(Icons.arrow_back, color: Theme.of(context).primaryColor),
+                  ),
                 ),
               ),
             ],

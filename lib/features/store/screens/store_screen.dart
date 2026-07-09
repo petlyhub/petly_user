@@ -498,18 +498,12 @@ class _StoreScreenState extends State<StoreScreen> {
                                                           ]
                                                       )
                                                   ),
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                        cat.name ?? '',
-                                                        maxLines: 1, overflow: TextOverflow.ellipsis,
-                                                        style: isActive
-                                                            ? robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor)
-                                                            : robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
-                                                      ),
-                                                    ],
+                                                  child: Text(
+                                                    cat.name ?? '',
+                                                    maxLines: 1, overflow: TextOverflow.ellipsis,
+                                                    style: isActive
+                                                        ? robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor)
+                                                        : robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
                                                   ),
                                                 ),
                                               ),
@@ -855,14 +849,12 @@ class _StoreScreenState extends State<StoreScreen> {
                                     borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
                                     color: isActive ? Theme.of(context).primaryColor.withValues(alpha: 0.1) : Colors.transparent,
                                   ),
-                                  child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                    Text(
-                                      cat.name ?? '',
-                                      style: isActive
-                                          ? robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor)
-                                          : robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
-                                    ),
-                                  ]),
+                                  child: Text(
+                                    cat.name ?? '',
+                                    style: isActive
+                                        ? robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor)
+                                        : robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
+                                  ),
                                 ),
                               );
                             },
