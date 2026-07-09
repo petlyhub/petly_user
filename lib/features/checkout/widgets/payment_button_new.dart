@@ -21,7 +21,8 @@ class PaymentButtonNew extends StatelessWidget {
               border: Border.all(color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor.withValues(alpha: 0.5))
           ),
           padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeLarge),
-          child: Row(children: [
+          child: Row(
+            children: [
             Image.asset(
               icon, width: 40, height: 40,
             ),
@@ -42,7 +43,6 @@ class PaymentButtonNew extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               child: const Icon(Icons.check, color: Colors.white, size: 18),
             ) : const SizedBox(),
-
           ]),
 
         ),

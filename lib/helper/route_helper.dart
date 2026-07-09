@@ -334,7 +334,7 @@ class RouteHelper {
     )),
     GetPage(name: signUp, page: () => const SignUpScreen()),
     GetPage(name: verification, page: () {
-      String? pass;
+      String? pass; 
       if(Get.parameters['pass'] != 'null') {
         List<int> decode = base64Decode(Get.parameters['pass']!.replaceAll(' ', '+'));
         pass = utf8.decode(decode);
@@ -358,9 +358,9 @@ class RouteHelper {
 
     GetPage(name: accessLocation, page: () => AccessLocationScreen(
       fromSignUp: Get.parameters['page'] == signUp, fromHome: Get.parameters['page'] == 'home', route: null,
-    )),
+    )), 
     GetPage(name: pickMap, page: () {
-      PickMapScreen? pickMapScreen = Get.arguments;
+      PickMapScreen? pickMapScreen = Get.arguments;  
       bool fromAddress = Get.parameters['page'] == 'add-address';
       return ((Get.parameters['page'] == 'parcel' && pickMapScreen == null) || (fromAddress && pickMapScreen == null))
           ? const NotFound() : pickMapScreen ?? PickMapScreen(

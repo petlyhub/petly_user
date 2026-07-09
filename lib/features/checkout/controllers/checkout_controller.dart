@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart/common/enums/payment_method.dart';
 import 'package:sixam_mart/features/cart/controllers/cart_controller.dart';
 import 'package:sixam_mart/features/coupon/controllers/coupon_controller.dart';
+import 'package:sixam_mart/features/dashboard/screens/dashboard_screen.dart';
 import 'package:sixam_mart/features/language/controllers/language_controller.dart';
 import 'package:sixam_mart/features/order/domain/models/order_model.dart';
 import 'package:sixam_mart/features/order/domain/services/order_service_interface.dart';
@@ -554,10 +555,12 @@ class CheckoutController extends GetxController implements GetxService {
 
     Response response =
         await checkoutServiceInterface.placeOrder(placeOrderBody, multiParts);
+        print("PLACE ORDER RESPONSE => ${response.body}");
     _isLoading = false;
     if (response.statusCode == 200) {
       String? message = response.body['message'];
       String paymentID = response.body['payment_id'];
+      String? redirectLink = response.body['redirect_link']; 
       orderID = response.body['order_id'].toString();
       // Debug print: order placed
       if (kDebugMode) {
@@ -578,8 +581,9 @@ class CheckoutController extends GetxController implements GetxService {
           maximumCodOrderAmount,
           fromCart,
           isCashOnDeliveryActive,
-          placeOrderBody.contactPersonNumber!,
+          placeOrderBody.contactPersonNumber,
           userID,
+          redirectLink,
         );
       } else {
         Get.find<CartController>().getCartDataOnline();
@@ -604,6 +608,7 @@ class CheckoutController extends GetxController implements GetxService {
           isCashOnDeliveryActive,
           placeOrderBody.contactPersonNumber,
           userID,
+          '',
         );
       } else {
         showCustomSnackBar(response.statusText);
@@ -650,7 +655,8 @@ class CheckoutController extends GetxController implements GetxService {
       String? message = response.body['message'];
       String orderID = response.body['order_id'].toString();
       String paymentID = response.body['payment_id'].toString();
-      callback(
+      String? redirectLink = response.body['redirect_link'];
+      callback( 
         true,
         message,
         paymentID,
@@ -662,13 +668,14 @@ class CheckoutController extends GetxController implements GetxService {
         isCashOnDeliveryActive,
         null,
         '',
+        redirectLink,
       );
       _orderAttachment = null;
       _rawAttachment = null;
       print('PAYMENT ID $paymentID');
       if (kDebugMode) {
         print(
-            '-------- Order placed successfully $orderID $paymentID ----------');
+            '-------- Order placed successfully $orderID $paymentID $redirectLink ----------');
       }
     } else {
       callback(
@@ -683,6 +690,8 @@ class CheckoutController extends GetxController implements GetxService {
         isCashOnDeliveryActive,
         null,
         '',
+        '',
+      
       );
     }
     update();
@@ -700,6 +709,7 @@ class CheckoutController extends GetxController implements GetxService {
     bool isCashOnDeliveryActive,
     String? contactNumber,
     String userID,
+    String? redirectLink,
   ) async {
     if (isSuccess) {
       if (kDebugMode) {
@@ -718,125 +728,225 @@ class CheckoutController extends GetxController implements GetxService {
       }
       stopLoader(canUpdate: false);
       HomeScreen.loadData(true);
-      if (paymentMethodIndex == 2) {
-        if (GetPlatform.isWeb) {
-          // Get.back();
-          await Get.find<AuthController>().saveGuestNumber(contactNumber ?? '');
-          String? hostname = html.window.location.hostname;
-          String protocol = html.window.location.protocol;
-          String selectedUrl;
-          selectedUrl =
-              '${AppConstants.baseUrl}/payment-mobile?payment_id=$paymentID&customer_id=${Get.find<ProfileController>().userInfoModel?.id ?? (userID.isNotEmpty ? userID : AuthHelper.getGuestId())}'
-              '&payment_method=$digitalPaymentName&payment_platform=web&callback=$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID&status=';
-          if (kDebugMode) {
-            print('Opening web payment URL: $selectedUrl');
-          }
-           html.window.open(selectedUrl,"_self");
-        } else {
-          final String route = RouteHelper.getPaymentRoute(
-            orderID,
-            Get.find<ProfileController>().userInfoModel?.id ??
-                (userID.isNotEmpty ? int.parse(userID) : 0),
-            orderType,
-            amount,
-            isCashOnDeliveryActive,
-            digitalPaymentName,
-            guestId: userID.isNotEmpty ? userID : AuthHelper.getGuestId(),
-            contactNumber: contactNumber,
+      print("REDIRECT LINK => $redirectLink");
+      print("IS NULL => ${redirectLink == null}");
+     print("IS EMPTY => ${redirectLink?.isEmpty}");
+      print("ROUTE HELPER ${RouteHelper.getInitialRoute()}");
+
+//       if (redirectLink != null && redirectLink.isNotEmpty) {
+//   Get.to(() => PaymentWebViewScreen(
+//         orderModel: OrderModel(
+//           id: int.parse(orderID),
+//           userId: Get.find<ProfileController>().userInfoModel?.id ??
+//               (userID.isNotEmpty ? int.parse(userID) : 0),
+//           orderAmount: amount,
+//           orderType: orderType,
+//         ),
+//         paymentID: paymentID,
+//         isCashOnDelivery: isCashOnDeliveryActive,
+//         paymentMethod: digitalPaymentName!,
+//         guestId: userID.isNotEmpty ? userID : AuthHelper.getGuestId(),
+//         contactNumber: contactNumber ?? '',
+//         addFundUrl: redirectLink,
+//       ));
+// }
+        if (redirectLink != null && redirectLink.isNotEmpty) {
+          print("Opening: $redirectLink");
+
+          final launched = await launchUrl(
+            Uri.parse(redirectLink),
+            mode: LaunchMode.externalApplication,
           );
-          if (kDebugMode) print('Navigating to payment route: $route');
-          Get.offNamed(route);
-        }
-      } else {
-        double total = ((amount / 100) *
+
+          Get.offAll(() => const DashboardScreen(
+                pageIndex: 0,       
+                fromSplash: false,
+         ));
+         double total = ((amount / 100) *
             Get.find<SplashController>()
                 .configModel!
                 .loyaltyPointItemPurchasePoint!);
         if (AuthHelper.isLoggedIn()) {
           Get.find<AuthController>().saveEarningPoint(total.toStringAsFixed(0));
-        }
-        if (ResponsiveHelper.isDesktop(Get.context) &&
-            AuthHelper.isLoggedIn()) {
-          Get.offNamed(RouteHelper.getInitialRoute());
-          Future.delayed(
-              const Duration(seconds: 2),
-              () => Get.dialog(Center(
-                  child: SizedBox(
-                      height: 350,
-                      width: 500,
-                      child: OrderSuccessfulDialog(orderID: orderID)))));
+        } 
         } else {
           Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID, contactNumber,
               createAccount: _isCreateAccount));
-        }
-      }
-      if (paymentMethodIndex == 4) {
-        if (GetPlatform.isWeb) {
-          // Get.back();
-          await Get.find<AuthController>().saveGuestNumber(contactNumber ?? '');
-          String? hostname = html.window.location.hostname;
-          String protocol = html.window.location.protocol;
-          String selectedUrl;
-          final String customerId =
-              Get.find<ProfileController>().userInfoModel?.id != null
-                  ? Get.find<ProfileController>().userInfoModel!.id.toString()
-                  : AuthHelper.getGuestId();
-          final String method =
-              Uri.encodeComponent(digitalPaymentName ?? paymentMethodValue);
-          final String callback = Uri.encodeComponent(
-              '$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID&status=');
-          final uri =
-              Uri.parse('${AppConstants.baseUrl}/payment-mobile').replace(
-            queryParameters: {
-              'customer_id': customerId.toString(),
-              'order_id': orderID.toString(),
-              'payment_method': method,
-              'payment_platform': 'app',
-              'callback': callback,
-            },
-          );
-          selectedUrl = uri.toString();
-          if (kDebugMode)
-            print('Opening web payment URL (case 4): $selectedUrl');
-          html.window.open(selectedUrl, "_self");
-        } else {
-          final String route = RouteHelper.getPaymentRoute(
-            orderID,
-            Get.find<ProfileController>().userInfoModel?.id ??
-                (userID.isNotEmpty ? int.parse(userID) : 0),
-            orderType,
-            amount,
-            isCashOnDeliveryActive,
-            digitalPaymentName,
-            guestId: userID.isNotEmpty ? userID : AuthHelper.getGuestId(),
-            contactNumber: contactNumber,
-          );
-          if (kDebugMode) print('Navigating to payment route (case 4): $route');
-          Get.offNamed(route);
-        }
-      } else {
-        double total = ((amount / 100) *
-            Get.find<SplashController>()
-                .configModel!
-                .loyaltyPointItemPurchasePoint!);
-        if (AuthHelper.isLoggedIn()) {
-          Get.find<AuthController>().saveEarningPoint(total.toStringAsFixed(0));
-        }
-        if (ResponsiveHelper.isDesktop(Get.context) &&
-            AuthHelper.isLoggedIn()) {
-          Get.offNamed(RouteHelper.getInitialRoute());
-          Future.delayed(
-              const Duration(seconds: 2),
-              () => Get.dialog(Center(
-                  child: SizedBox(
-                      height: 350,
-                      width: 500,
-                      child: OrderSuccessfulDialog(orderID: orderID)))));
-        } else {
-          Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID, contactNumber,
-              createAccount: _isCreateAccount));
-        }
-      }
+         }
+      //   if (ResponsiveHelper.isDesktop(Get.context) &&
+      //       AuthHelper.isLoggedIn()) {
+      //     Get.offNamed(RouteHelper.getInitialRoute());
+      //     Future.delayed(
+      //         const Duration(seconds: 2),
+      //         () => Get.dialog(Center(
+      //             child: SizedBox(
+      //                 height: 350,
+      //                 width: 500,
+      //                 child: OrderSuccessfulDialog(orderID: orderID)))));
+      //   } else {
+      //     Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID, contactNumber,
+      //         createAccount: _isCreateAccount));
+      //   }
+      // }
+
+
+          
+        //   print("LAUNCHED => $launched");
+        // } else {
+        //   showCustomSnackBar('Payment link not found');
+        // }
+
+      // if (paymentMethodIndex == 2) {
+      //   print("STEP 1");
+      //   if (GetPlatform.isWeb) {
+      //     // Get.back();
+      //     await Get.find<AuthController>().saveGuestNumber(contactNumber ?? '');
+      //     // String? hostname = html.window.location.hostname;
+      //     // String protocol = html.window.location.protocol;
+      //     // String selectedUrl;
+      //     // selectedUrl = 
+      //     //     '${AppConstants.baseUrl}/payment-mobile?payment_id=$paymentID&customer_id=${Get.find<ProfileController>().userInfoModel?.id ?? (userID.isNotEmpty ? userID : AuthHelper.getGuestId())}'
+      //     //     '&payment_method=$digitalPaymentName&payment_platform=web&callback=$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID&status=';
+      //     // print('SELECTED URL $selectedUrl');
+      //               if (redirectLink != null && redirectLink.isNotEmpty) {
+      //                 if (kDebugMode) {
+      //                   print('Opening payment URL: $redirectLink');
+      //                 }
+
+      //                 final uri = Uri.parse(redirectLink);
+      //                 print("STEP 2");
+      //                 print(redirectLink);
+      //                 final launched = await launchUrl(
+      //                   uri,
+      //                   mode: LaunchMode.externalApplication,
+      //                 );
+      //                   print("STEP 3");
+      //                 if (!launched) {
+      //                   showCustomSnackBar('Could not open payment page');
+      //                 }
+
+      //               } else {
+      //                 showCustomSnackBar('Payment link not found');
+      //               }
+      //       //         if (kDebugMode) {
+      //       //           print('Opening web payment URL: $redirectLink');
+      //       //         }
+      //       //         await launchUrl(
+      //       //         Uri.parse(redirectLink!),
+      //       //         mode: LaunchMode.externalApplication,
+      //       //       );
+      //       //       //  html.window.open(redirectLink!, "_self");
+      //       // } else {
+      //       //   if (redirectLink != null && redirectLink.isNotEmpty) {
+      //       //     await launchUrl(
+      //       //       Uri.parse(redirectLink),
+      //       //       mode: LaunchMode.externalApplication,
+      //       //     );
+      //       //   } else {
+      //       //     showCustomSnackBar('Payment link not found');
+      //       //   }
+      //     //    final String route = RouteHelper.getPaymentRoute(
+      //     //   orderID,
+      //     //   Get.find<ProfileController>().userInfoModel?.id ??
+      //     //       (userID.isNotEmpty ? int.parse(userID) : 0),
+      //     //   orderType,
+      //     //   amount,
+      //     //   isCashOnDeliveryActive,
+      //     //   digitalPaymentName,
+      //     //   guestId: userID.isNotEmpty ? userID : AuthHelper.getGuestId(),
+      //     //   contactNumber: contactNumber,
+            
+      //     // );
+      //     // if (kDebugMode) print('Navigating to payment route: $route');
+      //     // Get.offNamed(route);
+      //   }
+      // } else {
+      //   double total = ((amount / 100) *
+      //       Get.find<SplashController>()
+      //           .configModel!
+      //           .loyaltyPointItemPurchasePoint!);
+      //   if (AuthHelper.isLoggedIn()) {
+      //     Get.find<AuthController>().saveEarningPoint(total.toStringAsFixed(0));
+      //   }
+      //   if (ResponsiveHelper.isDesktop(Get.context) &&
+      //       AuthHelper.isLoggedIn()) {
+      //     Get.offNamed(RouteHelper.getInitialRoute());
+      //     Future.delayed(
+      //         const Duration(seconds: 2),
+      //         () => Get.dialog(Center(
+      //             child: SizedBox(
+      //                 height: 350,
+      //                 width: 500,
+      //                 child: OrderSuccessfulDialog(orderID: orderID)))));
+      //   } else {
+      //     Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID, contactNumber,
+      //         createAccount: _isCreateAccount));
+      //   }
+      // }
+//   if (paymentMethodIndex == 2) {
+//     await Get.find<AuthController>().saveGuestNumber(contactNumber ?? '');
+
+//       if (GetPlatform.isWeb) {
+//     if (kDebugMode) {
+//       print('Opening web payment URL: $redirectUrl');
+//     }
+
+//     html.window.open(redirectUrl, "_self");
+//   } else {
+//     final String route = RouteHelper.getPaymentRoute(
+//       orderID,
+//       Get.find<ProfileController>().userInfoModel?.id ??
+//           (userID.isNotEmpty ? int.parse(userID) : 0),
+//       orderType,
+//       amount,
+//       isCashOnDeliveryActive,
+//       digitalPaymentName,
+//       guestId: userID.isNotEmpty ? userID : AuthHelper.getGuestId(),
+//       contactNumber: contactNumber,
+//       addFundUrl: redirectUrl,
+//     );
+//     if (kDebugMode) {
+//       print('Navigating to payment route: $route');
+//     }
+//     Get.offNamed(route);
+//   }
+
+// } else {
+//   double total = ((amount / 100) *
+//       Get.find<SplashController>()
+//           .configModel!
+//           .loyaltyPointItemPurchasePoint!);
+
+//   if (AuthHelper.isLoggedIn()) {
+//     Get.find<AuthController>().saveEarningPoint(total.toStringAsFixed(0));
+//   }
+
+//   if (ResponsiveHelper.isDesktop(Get.context) &&
+//       AuthHelper.isLoggedIn()) {
+//     Get.offNamed(RouteHelper.getInitialRoute());
+
+//     Future.delayed(
+//       const Duration(seconds: 2),
+//       () => Get.dialog(
+//         Center(
+//           child: SizedBox(
+//             height: 350,
+//             width: 500,
+//             child: OrderSuccessfulDialog(orderID: orderID),
+//           ),
+//         ),
+//       ),
+//     );
+//   } else {
+//     Get.offNamed(
+//       RouteHelper.getOrderSuccessRoute(
+//         orderID,
+//         contactNumber,
+//         createAccount: _isCreateAccount,
+//       ),
+//     );
+//   }
+// }
       clearPrevData();
       Get.find<CouponController>().removeCouponData(false);
       updateTips(

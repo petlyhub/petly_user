@@ -192,7 +192,7 @@ class LocationController extends GetxController implements GetxService {
     ZoneResponseModel response = await getZone(AddressHelper.getUserAddressFromSharedPref()!.latitude, AddressHelper.getUserAddressFromSharedPref()!.longitude, false, updateInAddress: true);
     if(response.zoneIds.isEmpty) {  
       await AddressHelper.saveUserAddressInSharedPref(AddressModel());
-     // Get.toNamed(RouteHelper.getAccessLocationRoute(RouteHelper.splash));
+     Get.toNamed(RouteHelper.getAccessLocationRoute(RouteHelper.splash));
     } else {
       AddressModel address = AddressHelper.getUserAddressFromSharedPref()!;
       address.zoneId = response.zoneIds[0];
