@@ -41,7 +41,7 @@ class AddressWidget extends StatelessWidget {
             child: Row(mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Expanded(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
                     Row(mainAxisSize: MainAxisSize.min, children: [
                       Image.asset(
                         address!.addressType == 'home' ? Images.homeIcon : address!.addressType == 'office' ? Images.workIcon : Images.otherIcon,
@@ -54,7 +54,6 @@ class AddressWidget extends StatelessWidget {
                         style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault),
                       ),
                     ]),
-                    const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
                     Text(
                       address!.address!,

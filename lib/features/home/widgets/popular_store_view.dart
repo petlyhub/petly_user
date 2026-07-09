@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart/features/language/controllers/language_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
@@ -23,8 +22,6 @@ class TitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool ltr = Get.find<LocalizationController>().isLtr;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
       child: Column(
@@ -79,7 +76,7 @@ class TitleWidget extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Icon(
-                          ltr ? Icons.arrow_back_ios : Icons.arrow_forward_ios,
+                          Icons.arrow_forward_ios,
                           size: 12,
                           color: Theme.of(context).primaryColor,
                         ),

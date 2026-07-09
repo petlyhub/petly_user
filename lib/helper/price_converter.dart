@@ -14,17 +14,28 @@ class PriceConverter {
         price = price! - ((discount / 100) * price);
       }
     }
-    bool isRightSide = Get.find<SplashController>().configModel!.currencySymbolDirection == 'right';
+    bool isArabic = Get.locale?.languageCode == 'ar';
+    bool isRightSide = true;
+    String currency = isArabic ? 'ر.س' : 'SAR';
 
+    String formatted;
     if(forTaxi && price! > 100000) {
-      return '${isRightSide ? '' : '${Get.find<SplashController>().configModel!.currencySymbol!} '}'
+      formatted = '${isRightSide ? '' : '$currency '}'
           '${intl.NumberFormat.compact().format(price)}'
-          '${isRightSide ? ' ${Get.find<SplashController>().configModel!.currencySymbol!}' : ''}';
+          '${isRightSide ? ' $currency' : ''}';
+    } else {
+      formatted = '${isRightSide ? '' : '$currency '}'
+          '${formatedStringPrice ?? toFixed(price!).toStringAsFixed(forDM ? 0 : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!)
+          .replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}'
+          '${isRightSide ? ' $currency' : ''}';
     }
-    return '${isRightSide ? '' : '${Get.find<SplashController>().configModel!.currencySymbol!} '}'
-        '${formatedStringPrice ?? toFixed(price!).toStringAsFixed(forDM ? 0 : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!)
-        .replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}'
-        '${isRightSide ? ' ${Get.find<SplashController>().configModel!.currencySymbol!}' : ''}';
+    return isArabic ? _toArabicDigits(formatted) : formatted;
+  }
+
+  static String _toArabicDigits(String s) {
+    return s.replaceAll('0', '\u0660').replaceAll('1', '\u0661').replaceAll('2', '\u0662')
+        .replaceAll('3', '\u0663').replaceAll('4', '\u0664').replaceAll('5', '\u0665')
+        .replaceAll('6', '\u0666').replaceAll('7', '\u0667').replaceAll('8', '\u0668').replaceAll('9', '\u0669');
   }
 
   static Widget convertAnimationPrice(double? price, {double? discount, String? discountType, bool forDM = false, TextStyle? textStyle}) {
@@ -35,7 +46,9 @@ class PriceConverter {
         price = price! - ((discount / 100) * price);
       }
     }
-    bool isRightSide = Get.find<SplashController>().configModel!.currencySymbolDirection == 'right';
+    bool isArabic = Get.locale?.languageCode == 'ar';
+    bool isRightSide = true;
+    String currency = isArabic ? 'ر.س' : 'SAR';
     return Directionality(
       textDirection: TextDirection.ltr,
       child: AnimatedFlipCounter(
@@ -43,8 +56,8 @@ class PriceConverter {
         value: toFixed(price!),
         textStyle: textStyle ?? robotoMedium,
         fractionDigits: forDM ? 0 : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!,
-        prefix: isRightSide ? '' : '${Get.find<SplashController>().configModel!.currencySymbol!} ',
-        suffix: isRightSide ? '${Get.find<SplashController>().configModel!.currencySymbol!} ' : '',
+        prefix: isRightSide ? '' : '$currency ',
+        suffix: isRightSide ? ' $currency' : '',
       ),
     );
   }
@@ -69,7 +82,9 @@ class PriceConverter {
   }
 
   static String percentageCalculation(String price, String discount, String discountType) {
-    return '$discount${discountType == 'percent' ? '%' : Get.find<SplashController>().configModel!.currencySymbol} OFF';
+    bool isArabic = Get.locale?.languageCode == 'ar';
+    String currency = isArabic ? 'ر.س' : 'SAR';
+    return '$discount${discountType == 'percent' ? '%' : currency} OFF';
   }
 
   static double toFixed(double val) {

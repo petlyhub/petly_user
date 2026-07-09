@@ -18,11 +18,14 @@ import 'package:sixam_mart/theme/dark_theme.dart';
 import 'package:sixam_mart/theme/light_theme.dart';
 import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/util/messages.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:sixam_mart/common/widgets/no_internet_screen.dart';
 import 'package:sixam_mart/features/home/widgets/cookies_view.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'helper/get_di.dart' as di;
@@ -94,7 +97,12 @@ Future<void> main() async {
     );
   }
 
-  runApp(MyApp(languages: languages, body: body));
+  runApp(ScreenUtilInit(
+    designSize: const Size(375, 812),
+    minTextAdapt: true,
+    splitScreenMode: true,
+    builder: (context, child) => MyApp(languages: languages, body: body),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -179,6 +187,14 @@ class _MyAppState extends State<MyApp> {
                       return const SizedBox();
                     }
                   }),
+
+                  StreamBuilder<List<ConnectivityResult>>(
+                    stream: Connectivity().onConnectivityChanged,
+                    builder: (context, snapshot) {
+                      final connected = snapshot.data == null || !snapshot.data!.contains(ConnectivityResult.none);
+                      return connected ? const SizedBox() : const NoInternetScreen();
+                    },
+                  ),
                 ]),
               ));
             },

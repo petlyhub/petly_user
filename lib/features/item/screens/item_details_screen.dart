@@ -204,7 +204,9 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                               const Expanded(child: SizedBox()),
                               Container(
                                 decoration: BoxDecoration(color: Theme.of(context).disabledColor, borderRadius: BorderRadius.circular(5)),
-                                child: Row(children: [
+                                child: Row(
+                                  textDirection: TextDirection.ltr,
+                                  children: [
                                   InkWell(
                                     onTap: cartController.isLoading ? null : () {
                                       if(itemController.cartIndex != -1) {
