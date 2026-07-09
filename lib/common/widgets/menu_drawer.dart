@@ -37,6 +37,10 @@ class MenuDrawerState extends State<MenuDrawer> with SingleTickerProviderStateMi
       Get.back();
       Get.toNamed(RouteHelper.getAddressRoute());
     }),
+    // Menu(icon: Images.dog, title: 'petly'.tr, onTap: () {
+    //   Get.back();
+    //   Get.toNamed(RouteHelper.getPetlyAnimals());
+    // }),
     Menu(icon: Images.language, title: 'language'.tr, onTap: () {
       Get.back();
       Get.toNamed(RouteHelper.getLanguageRoute('menu'));

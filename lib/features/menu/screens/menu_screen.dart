@@ -20,7 +20,6 @@ import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/common/widgets/confirmation_dialog.dart';
-import 'package:sixam_mart/common/widgets/custom_image.dart';
 import 'package:sixam_mart/features/menu/widgets/portion_widget.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -202,10 +201,10 @@ class _MenuScreenState extends State<MenuScreen> {
                                 icon: Images.addressIcon,
                                 title: 'my_address'.tr,
                                 route: RouteHelper.getAddressRoute()),
-                            PortionWidget(
-                                icon: Images.dog, 
-                                title: 'petly'.tr,
-                                route: RouteHelper.getPetlyAnimals()),
+                            // PortionWidget(
+                            //     icon: Images.dog,  
+                            //     title: 'petly'.tr,
+                            //     route: RouteHelper.getPetlyAnimals()),
                             PortionWidget(
                                 icon: Images.languageIcon,
                                 title: 'language'.tr,

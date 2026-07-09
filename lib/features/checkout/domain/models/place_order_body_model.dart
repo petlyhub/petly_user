@@ -236,7 +236,7 @@
         data['sender_zone_id'] = _senderZoneId.toString();
       }
       data['contact_person_name'] = _contactPersonName!;
-      data['contact_person_number'] = _contactPersonNumber!;
+      data['contact_person_number'] = _contactPersonNumber??'';
       data['address_type'] = _addressType ?? '';
       if (_parcelCategoryId != null) {
         data['parcel_category_id'] = _parcelCategoryId!;
