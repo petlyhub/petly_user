@@ -751,24 +751,21 @@ class CheckoutController extends GetxController implements GetxService {
 //       ));
 // }
         if (redirectLink != null && redirectLink.isNotEmpty) {
-          print("Opening: $redirectLink");
-
-          final launched = await launchUrl(
-            Uri.parse(redirectLink),
-            mode: LaunchMode.externalApplication,
-          );
-
-          Get.offAll(() => const DashboardScreen(
-                pageIndex: 0,       
-                fromSplash: false,
-         ));
-         double total = ((amount / 100) *
-            Get.find<SplashController>()
-                .configModel!
-                .loyaltyPointItemPurchasePoint!);
-        if (AuthHelper.isLoggedIn()) {
-          Get.find<AuthController>().saveEarningPoint(total.toStringAsFixed(0));
-        } 
+          Get.off(() => PaymentWebViewScreen(
+            orderModel: OrderModel(
+              id: int.parse(orderID),
+              userId: Get.find<ProfileController>().userInfoModel?.id ??
+                  (userID.isNotEmpty ? int.parse(userID) : 0),
+              orderAmount: amount,
+              orderType: orderType,
+            ),
+            paymentID: paymentID,
+            isCashOnDelivery: isCashOnDeliveryActive,
+            paymentMethod: digitalPaymentName ?? '',
+            guestId: userID.isNotEmpty ? userID : AuthHelper.getGuestId(),
+            contactNumber: contactNumber ?? '',
+            addFundUrl: redirectLink,
+          ));
         } else {
           Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID, contactNumber,
               createAccount: _isCreateAccount));

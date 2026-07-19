@@ -1577,5 +1577,7 @@
   "sort_by_z_to_a" : "Sort by: Z to A",
   "only_halal" : "Only Halal",
   "only_veg" : "Only Veg",
-  "only_non_veg" : "Only Non-veg"
+  "only_non_veg" : "Only Non-veg",
+  "loading_payment_page" : "Loading payment page",
+  "please_wait" : "Please wait"
 }

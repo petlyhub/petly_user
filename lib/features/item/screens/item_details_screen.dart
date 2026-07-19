@@ -114,7 +114,8 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
               cart = OnlineCart(
                   cartId, widget.item!.id, null, priceWithDiscount.toString(), '',
                   variation != null ? [variation] : [], null,
-                  itemController.cartIndex != -1 ? cartController.cartList[itemController.cartIndex].quantity
+                  itemController.cartIndex != -1 && itemController.cartIndex < cartController.cartList.length
+                      ? cartController.cartList[itemController.cartIndex].quantity
                       : itemController.quantity, listOfAddOnId, addOnsList, listOfAddOnQty, 'Item'
               );
               priceWithAddons = priceWithQuantity + (Get.find<SplashController>().configModel!.moduleConfig!.module!.addOn! ? addonsCost : 0);
@@ -209,7 +210,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                   children: [
                                   InkWell(
                                     onTap: cartController.isLoading ? null : () {
-                                      if(itemController.cartIndex != -1) {
+                                      if(itemController.cartIndex != -1 && itemController.cartIndex < cartController.cartList.length) {
                                         if(cartController.cartList[itemController.cartIndex].quantity! > 1) {
                                           cartController.setQuantity(false, itemController.cartIndex, stock, cartController.cartList[itemController.cartIndex].quantity);
                                         }
@@ -226,13 +227,13 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                   ),
 
                                   Text(
-                                    itemController.cartIndex != -1 ? cartController.cartList[itemController.cartIndex].quantity.toString()
+                                    itemController.cartIndex != -1 && itemController.cartIndex < cartController.cartList.length ? cartController.cartList[itemController.cartIndex].quantity.toString()
                                         : itemController.quantity.toString(),
                                     style:robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge),
                                   ),
 
                                   InkWell(
-                                    onTap: cartController.isLoading ? null : () => itemController.cartIndex != -1
+                                    onTap: cartController.isLoading ? null : () => itemController.cartIndex != -1 && itemController.cartIndex < cartController.cartList.length
                                         ? cartController.setQuantity(true, itemController.cartIndex, stock, cartController.cartList[itemController.cartIndex].quantityLimit)
                                         : itemController.setQuantity(true, stock, itemController.item!.quantityLimit),
                                     child: const Padding(
@@ -252,7 +253,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                           const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 
                           Text(
-                            PriceConverter.convertPrice(itemController.cartIndex != -1
+                            PriceConverter.convertPrice(itemController.cartIndex != -1 && itemController.cartIndex < Get.find<CartController>().cartList.length
                                 ? _getItemDetailsDiscountPrice(cart: Get.find<CartController>().cartList[itemController.cartIndex])
                                 : priceWithAddons), textDirection: TextDirection.ltr,
                             style:robotoBold.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeLarge),

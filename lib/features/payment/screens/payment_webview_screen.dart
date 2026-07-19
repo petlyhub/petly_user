@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart/features/dashboard/screens/dashboard_screen.dart';
 import 'package:sixam_mart/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart/features/order/controllers/order_controller.dart';
 import 'package:sixam_mart/features/order/domain/models/order_model.dart';
@@ -36,12 +35,13 @@ class PaymentWebViewScreen extends StatefulWidget {
 
 class PaymentScreenState extends State<PaymentWebViewScreen> {
   late String selectedUrl;
-  bool _isLoading = true;
   final bool _canRedirect = true;
   double? _maximumCodOrderAmount;
   PullToRefreshController? pullToRefreshController;
   InAppWebViewController? webViewController;
   final GlobalKey webViewKey = GlobalKey();
+  bool _isLoading = true;
+  bool _pageReady = false;
 
  @override
 void initState() {
@@ -61,8 +61,8 @@ void initState() {
         '&payment_method=${widget.paymentMethod}';
   }
 
-  print("SELECTED URL => $selectedUrl");
 
+  print("SELECTED URL => $selectedUrl");
   _initData();
 }
 
@@ -97,11 +97,14 @@ void initState() {
         _exitApp();
       },
       child: Scaffold(
-        backgroundColor: Theme.of(context).cardColor,
-        appBar: CustomAppBar(title: '', onBackPressed: () => _exitApp(), backButton: true),
-        body: Stack(
+        backgroundColor: Colors.white,
+        body: Column(
           children: [
-            InAppWebView(
+            CustomAppBar(title: '', onBackPressed: () => _exitApp(), backButton: true),
+            Expanded(
+              child: Stack(
+                children: [
+                  InAppWebView(
               key: webViewKey,
               initialUrlRequest: URLRequest(url: WebUri(selectedUrl)),
               initialUserScripts: UnmodifiableListView<UserScript>([]),
@@ -112,25 +115,13 @@ void initState() {
                 allowsInlineMediaPlayback: true,
                 iframeAllow: "camera; microphone",
                 iframeAllowFullscreen: true,
+                transparentBackground: true,
               ),
               onWebViewCreated: (controller) async {
                 webViewController = controller;
               },
               onLoadStart: (controller, url) async {
                  print("WEBVIEW LOAD START => $url");
-                 Get.offAll(() => const DashboardScreen(
-                    pageIndex: 0,
-                    fromSplash: false,
-              ));
-                // Get.find<OrderController>().paymentRedirect(
-                //   url: url.toString(), canRedirect: _canRedirect, onClose: (){} ,
-                //   addFundUrl: widget.addFundUrl, orderID: widget.orderModel.id.toString(), contactNumber: widget.contactNumber,
-                //   subscriptionUrl: widget.subscriptionUrl, storeId: widget.storeId, createAccount: widget.createAccount!,
-                //   guestId: widget.guestId,
-                // );
-                setState(() {
-                  _isLoading = true;
-                });
               },
               shouldOverrideUrlLoading: (controller, navigationAction) async {
                 Uri uri = navigationAction.request.url!;
@@ -145,16 +136,17 @@ void initState() {
               onLoadStop: (controller, url) async {
                   print("WEBVIEW LOAD STOP => $url");
                 pullToRefreshController?.endRefreshing();
-                setState(() {
-                  _isLoading = false;
-                });
+                if (_isLoading && _pageReady) {
+                  setState(() {
+                    _isLoading = false;
+                  });
+                }
                 Get.find<OrderController>().paymentRedirect(
                   url: url.toString(), canRedirect: _canRedirect, onClose: (){} ,
                   addFundUrl: widget.addFundUrl, orderID: widget.orderModel.id.toString(), contactNumber: widget.contactNumber,
                   subscriptionUrl: widget.subscriptionUrl, storeId: widget.storeId, createAccount: widget.createAccount!,
                   guestId: widget.guestId,
                 );
-                // _redirect(url.toString());
               },
               
                 onReceivedError: (controller, request, error) {
@@ -167,18 +159,51 @@ void initState() {
               onProgressChanged: (controller, progress) {
                 if (progress == 100) {
                   pullToRefreshController?.endRefreshing();
+                  _pageReady = true;
                 }
-                // setState(() {
-                //   _value = progress / 100;
-                // });
               },
               onConsoleMessage: (controller, consoleMessage) {
                 debugPrint(consoleMessage.message);
               },
             ),
-            _isLoading ? Center(
-              child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
+            _isLoading ? Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.white,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'loading_payment_page'.tr,
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'please_wait'.tr,
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
             ) : const SizedBox.shrink(),
+                ],
+              ),
+            ),
           ],
         ),
       ),

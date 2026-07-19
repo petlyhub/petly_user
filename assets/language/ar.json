@@ -1568,5 +1568,7 @@
   "sort_by_z_to_a": "الترتيب: من ي إلى أ",
   "only_halal": "حلال فقط",
   "only_veg": "نباتي فقط",
-  "only_non_veg": "غير نباتي فقط"
+  "only_non_veg": "غير نباتي فقط",
+  "loading_payment_page": "جاري تحميل صفحة الدفع",
+  "please_wait": "يرجى الانتظار"
 }
