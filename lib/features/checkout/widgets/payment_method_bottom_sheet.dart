@@ -535,33 +535,27 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                                   height: 28,
                                                 ),
                                                 Image.asset(
-                                                  'assets/image/mastercard.webp',
+                                                  'assets/image/mastercard.jpeg',
                                                   height: 24,
                                                 ),
                                                 Image.asset(
-                                                  'assets/image/visa.png',
+                                                  'assets/image/Logo_Visa.jpg',
                                                   height: 24,
                                                 ),
                     
                                                 Image.asset(
-                                                  'assets/image/apple_pay.JPG',
+                                                  'assets/image/apple_pay.png',
                                                   height: 24,
+                                                ), Image.asset(
+                                                  'assets/image/payment_tamara.png',
+                                                  height: 28,
                                                 ),
                                               ],
                                             ),
                                           ],
                                         ),
                                       ),
-                                      CustomImage(
-                                        height: 20,
-                                        fit: BoxFit.contain,
-                                        image: Get.find<SplashController>()
-                                            .configModel!
-                                            .activePaymentMethodList![index]
-                                            .getWayImageFullUrl!,
-                                      ),
-                                      const SizedBox(
-                                          width: Dimensions.paddingSizeSmall),
+
                                     ]),
                                   ),
                                 );
