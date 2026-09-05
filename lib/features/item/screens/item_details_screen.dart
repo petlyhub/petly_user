@@ -146,7 +146,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                               );
                             }
                         ),
-                        const Divider(height: 20, thickness: 2),
+                        const Divider(height: 10, thickness: 1,),
 
                         // Variation
                         ListView.builder(
@@ -172,18 +172,22 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                     onTap: () {
                                       itemController.setCartVariationIndex(index, i, itemController.item);
                                     },
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                                      decoration: BoxDecoration(
-                                        color: itemController.variationIndex![index] != i ? Theme.of(context).disabledColor : Theme.of(context).primaryColor,
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: itemController.variationIndex![index] != i ? Border.all(color: Theme.of(context).disabledColor, width: 2) : null,
-                                      ),
-                                      child: Text(
-                                        itemController.item!.choiceOptions![index].options![i].trim(), maxLines: 1, overflow: TextOverflow.ellipsis,
-                                        style:robotoRegular.copyWith(
-                                          color: itemController.variationIndex![index] != i ? Colors.black : Colors.white,
+                                    child: Material(
+                                      elevation: 8,
+                                       borderRadius: BorderRadius.circular(5),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
+                                        decoration: BoxDecoration(
+                                          color: itemController.variationIndex![index] != i ? Theme.of(context).disabledColor : Theme.of(context).primaryColor,
+                                          borderRadius: BorderRadius.circular(5),
+                                          border: itemController.variationIndex![index] != i ? Border.all(color: Theme.of(context).disabledColor, width: 2) : null,
+                                        ),
+                                        child: Text(
+                                          itemController.item!.choiceOptions![index].options![i].trim(), maxLines: 1, overflow: TextOverflow.ellipsis,
+                                          style:robotoRegular.copyWith(
+                                            color: itemController.variationIndex![index] != i ? Colors.black : Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -251,11 +255,18 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                           Text('${'total_amount'.tr}:', style:robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
                           const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 
-                          Text(
-                            PriceConverter.convertPrice(itemController.cartIndex != -1
-                                ? _getItemDetailsDiscountPrice(cart: Get.find<CartController>().cartList[itemController.cartIndex])
-                                : priceWithAddons), textDirection: TextDirection.ltr,
-                            style:robotoBold.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeLarge),
+                          Material(
+                            elevation: 8,
+                            borderRadius: BorderRadius.circular(5),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 12,right: 12),
+                              child: Text(
+                                PriceConverter.convertPrice(itemController.cartIndex != -1
+                                    ? _getItemDetailsDiscountPrice(cart: Get.find<CartController>().cartList[itemController.cartIndex])
+                                    : priceWithAddons), textDirection: TextDirection.ltr,
+                                style:robotoBold.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeLarge),
+                              ),
+                            ),
                           ),
                         ]),
                         const SizedBox(height: Dimensions.paddingSizeExtraLarge),
@@ -448,42 +459,46 @@ class QuantityButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: cartController.isLoading ? null : () {
-        if(isExistInCart) {
-          if (!isIncrement && quantity! > 1) {
-            Get.find<CartController>().setQuantity(false, cartIndex, stock, quantityLimit);
-          } else if (isIncrement && quantity! > 0) {
-            if(quantity! < stock! || !Get.find<SplashController>().configModel!.moduleConfig!.module!.stock!) {
-              Get.find<CartController>().setQuantity(true, cartIndex, stock, quantityLimit);
-            }else {
-              showCustomSnackBar('out_of_stock'.tr);
+    return Material(
+      elevation: 8,
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: cartController.isLoading ? null : () {
+          if(isExistInCart) {
+            if (!isIncrement && quantity! > 1) {
+              Get.find<CartController>().setQuantity(false, cartIndex, stock, quantityLimit);
+            } else if (isIncrement && quantity! > 0) {
+              if(quantity! < stock! || !Get.find<SplashController>().configModel!.moduleConfig!.module!.stock!) {
+                Get.find<CartController>().setQuantity(true, cartIndex, stock, quantityLimit);
+              }else {
+                showCustomSnackBar('out_of_stock'.tr);
+              }
             }
-          }
-        } else {
-          if (!isIncrement && quantity! > 1) {
-            Get.find<ItemController>().setQuantity(false, stock, quantityLimit);
-          } else if (isIncrement && quantity! > 0) {
-            if(quantity! < stock! || !Get.find<SplashController>().configModel!.moduleConfig!.module!.stock!) {
-              Get.find<ItemController>().setQuantity(true, stock, quantityLimit);
-            }else {
-              showCustomSnackBar('out_of_stock'.tr);
+          } else {
+            if (!isIncrement && quantity! > 1) {
+              Get.find<ItemController>().setQuantity(false, stock, quantityLimit);
+            } else if (isIncrement && quantity! > 0) {
+              if(quantity! < stock! || !Get.find<SplashController>().configModel!.moduleConfig!.module!.stock!) {
+                Get.find<ItemController>().setQuantity(true, stock, quantityLimit);
+              }else {
+                showCustomSnackBar('out_of_stock'.tr);
+              }
             }
+      
           }
-
-        }
-      },
-      child: Container(
-        height: 30, width: 30,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: (quantity! == 1 && !isIncrement) || cartController.isLoading ? Theme.of(context).disabledColor : Theme.of(context).primaryColor,
-        ),
-        child: Center(
-          child: Icon(
-            isIncrement ? Icons.add : Icons.remove,
-            color: isIncrement ? Colors.white : quantity! == 1 ? Colors.black : Colors.white,
-            size: isCartWidget ? 26 : 20,
+        },
+        child: Container(
+          height: 30, width: 30,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: (quantity! == 1 && !isIncrement) || cartController.isLoading ? Theme.of(context).disabledColor : Theme.of(context).primaryColor,
+          ),
+          child: Center(
+            child: Icon(
+              isIncrement ? Icons.add : Icons.remove,
+              color: isIncrement ? Colors.white : quantity! == 1 ? Colors.black : Colors.white,
+              size: isCartWidget ? 26 : 20,
+            ),
           ),
         ),
       ),

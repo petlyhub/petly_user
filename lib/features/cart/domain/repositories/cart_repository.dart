@@ -91,7 +91,7 @@ class CartRepository implements CartRepositoryInterface<OnlineCart> {
       AppConstants.moduleId: '${ModuleHelper.getCacheModule()?.id}',
       'Authorization': 'Bearer ${sharedPreferences.getString(AppConstants.token)}'
     };
-
+  
     Response response = await apiClient.getData(
       '${AppConstants.getCartListUri}${!AuthHelper.isLoggedIn() ? '?guest_id=${AuthHelper.getGuestId()}' : ''}',
       headers: ModuleHelper.getModule()?.id == null ? header : null,

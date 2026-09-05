@@ -95,7 +95,7 @@ class CartController extends GetxController implements GetxService {
       await Get.find<SplashController>().setModule(module);
       HomeScreen.loadData(true);
     }
-  }
+ }
 
   double calculationCart() {
     _addOnsList = [];

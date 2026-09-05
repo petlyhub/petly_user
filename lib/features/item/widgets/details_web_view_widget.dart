@@ -53,7 +53,7 @@ class DetailsWebViewWidget extends StatelessWidget {
                         SizedBox(
                           height: Get.size.height*0.5,
                           child: CustomImage(
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fitHeight,
                             image: '${imageList[itemController.productSelect]}',
                           ),
                         ),
@@ -75,7 +75,7 @@ class DetailsWebViewWidget extends StatelessWidget {
                                   ),
                                   padding: const EdgeInsets.all(2),
                                   child: CustomImage(
-                                    fit: BoxFit.cover,
+                                    fit: BoxFit.fitHeight,
                                     image: '${imageList[index]}',
                                   ),
                                 ),

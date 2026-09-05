@@ -462,7 +462,7 @@ class _CartScreenState extends State<CartScreen> {
       decoration: BoxDecoration(color: Theme.of(context).cardColor),
       width: double.infinity,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
+    
         GetBuilder<StoreController>(builder: (storeController) {
           List<Item>? suggestedItems;
           if(storeController.cartSuggestItemModel != null){
@@ -485,7 +485,7 @@ class _CartScreenState extends State<CartScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeExtraSmall),
                 child: Text('you_may_also_like'.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault)),
               ),
-
+    
               SizedBox(
                 height: ResponsiveHelper.isDesktop(context) ? 160 : 130,
                 child: ListView.builder(

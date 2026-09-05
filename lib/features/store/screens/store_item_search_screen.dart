@@ -45,7 +45,6 @@ class _StoreItemSearchScreenState extends State<StoreItemSearchScreen> {
               child: SizedBox(width: Dimensions.webMaxWidth, child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeSmall),
                 child: Row(children: [
-
                   IconButton(
                     onPressed: () => Get.back(),
                     icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).primaryColor),

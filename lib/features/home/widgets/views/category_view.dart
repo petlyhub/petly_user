@@ -71,14 +71,18 @@ class _CategoryViewState extends State<CategoryView> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(
-                        height: 90.h,
-                        width: 90.w,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(14.r),
-                          child: CustomImage(
-                            image: cat.imageFullUrl ?? '',
-                            fit: BoxFit.cover,
+                      Material(
+                        elevation: 8,
+                        borderRadius: BorderRadius.circular(14.r),
+                        child: SizedBox(
+                          height: 90.h,
+                          width: 90.w,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(14.r),
+                            child: CustomImage(
+                              image: cat.imageFullUrl ?? '',
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),

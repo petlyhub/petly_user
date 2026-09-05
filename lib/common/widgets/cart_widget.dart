@@ -14,7 +14,7 @@ class CartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(clipBehavior: Clip.none, children: [
       Image.asset(Images.shoppingCart, height: size, width: size, color: color),
-
+    
       GetBuilder<CartController>(builder: (cartController) {
         return cartController.cartList.isNotEmpty ? Positioned(
           top: -5, right: -5,

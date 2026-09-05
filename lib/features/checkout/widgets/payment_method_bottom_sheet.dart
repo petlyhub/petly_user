@@ -533,7 +533,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                                  Image.asset(
                                                   'assets/image/mada.png',
                                                   height: 28,
-                                                ),
+                                                ),  
                                                 Image.asset(
                                                   'assets/image/mastercard.webp',
                                                   height: 24,

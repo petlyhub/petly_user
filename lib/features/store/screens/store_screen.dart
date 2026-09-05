@@ -204,7 +204,7 @@ class _StoreScreenState extends State<StoreScreen> {
                             child: Stack(
                               children: [
                                 CustomImage(
-                                  fit: BoxFit.cover, height: 240, width: 590,
+                                  fit: BoxFit.fitHeight, height: 240, width: 590,
                                   image: store?.coverPhotoFullUrl ?? '',
                                 ),
                                 store?.discount != null ? Positioned(
@@ -299,9 +299,15 @@ class _StoreScreenState extends State<StoreScreen> {
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                                         child: Stack(children: [
-                                          CustomImage(
-                                            image: '${store.logoFullUrl}',
-                                            height: 60 - (scrollingRate * 15), width: 70 - (scrollingRate * 15), fit: BoxFit.cover,
+                                          Material(
+                                            elevation: 12,
+                                            borderOnForeground: true,
+                                            
+                                            child: CustomImage(
+                                              image: '${store.logoFullUrl}',
+                                              
+                                              height: 60 - (scrollingRate * 15), width: 70 - (scrollingRate * 15), fit: BoxFit.cover,
+                                            ),
                                           ),
                                           storeController.isStoreOpenNow(store.active!, store.schedules) ? const SizedBox() : Positioned(
                                             bottom: 0, left: 0, right: 0,
@@ -359,16 +365,20 @@ class _StoreScreenState extends State<StoreScreen> {
                                               showCustomSnackBar('you_are_not_logged_in'.tr);
                                             }
                                           },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                                              borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                            ),
-                                            padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-                                            child: Icon(
-                                              isWished ? Icons.favorite : Icons.favorite_border,
-                                              color: isWished ? Theme.of(context).primaryColor : Theme.of(context).disabledColor,
-                                              size: 24  - (scrollingRate * 4),
+                                          child: Material(
+                                            elevation: 12,
+                                            borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                                                borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                                              ),
+                                              padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
+                                              child: Icon(
+                                                isWished ? Icons.favorite : Icons.favorite_border,
+                                                color: isWished ? Theme.of(context).primaryColor : Theme.of(context).disabledColor,
+                                                size: 24  - (scrollingRate * 4),
+                                              ),
                                             ),
                                           ),
                                         );
@@ -376,13 +386,17 @@ class _StoreScreenState extends State<StoreScreen> {
                                       const SizedBox(width: Dimensions.paddingSizeSmall),
                                       AppConstants.webHostedUrl.isNotEmpty ? InkWell(
                                         onTap: () { storeController.shareStore(); },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                                            borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                                        child: Material(
+                                          elevation: 12,
+                                           borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                                              borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                                            ),
+                                            padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
+                                            child: const Icon(Icons.share,),
                                           ),
-                                          padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-                                          child: const Icon(Icons.share),
                                         ),
                                       ) : const SizedBox(),
                                       const SizedBox(width: Dimensions.paddingSizeSmall),
@@ -397,7 +411,7 @@ class _StoreScreenState extends State<StoreScreen> {
                     ),
                     background: CustomImage(fit: BoxFit.cover, image: '${store!.coverPhotoFullUrl}'),
                   ),
-                  actions: const [SizedBox()],
+                  actions: const [SizedBox()], 
                 ),
 
                 // ======= Recommended (كما هو) =======
@@ -440,7 +454,7 @@ class _StoreScreenState extends State<StoreScreen> {
                             ),
                           ],
                         ),
-                      ),
+                      ),  
                     ),
                   ),
                 ): const SliverToBoxAdapter(child: SizedBox()),
@@ -799,13 +813,17 @@ class _StoreScreenState extends State<StoreScreen> {
                             const Expanded(child: SizedBox()),
                             !ResponsiveHelper.isDesktop(context) ? InkWell(
                               onTap: ()=> Get.toNamed(RouteHelper.getSearchStoreItemRoute(store!.id)),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                  color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                              child: Material(
+                                elevation: 12,
+                                borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                                    color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                                  ),
+                                  padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
+                                  child: Icon(Icons.search, size: 28, color: Theme.of(context).primaryColor),
                                 ),
-                                padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-                                child: Icon(Icons.search, size: 28, color: Theme.of(context).primaryColor),
                               ),
                             ) : const SizedBox(),
                             storeController.type.isNotEmpty ? VegFilterWidget(
@@ -842,7 +860,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                   }                                  setState(() {});
                                 },
 
-                                child: Container(
+                                child: Container( 
                                   padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
                                   margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
                                   decoration: BoxDecoration(

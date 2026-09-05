@@ -87,22 +87,29 @@ class BannerView extends StatelessWidget {
                         }
                       }
                     },
-                    child: Container(
-                    
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 0)],
-                      ),
-                      margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                        child: GetBuilder<SplashController>(builder: (splashController) {
-                          return CustomImage(
-                            image: '${bannerList[index]}',
-                            fit: BoxFit.cover,
-                          );
-                        }),
+                    child: Material(
+                      elevation: 8,
+                      borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 0)],
+                        ),
+                        margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
+                        child: Material(
+                          elevation: 8,
+                          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                            child: GetBuilder<SplashController>(builder: (splashController) {
+                              return CustomImage(
+                                image: '${bannerList[index]}',
+                                fit: BoxFit.cover,
+                              );
+                            }),
+                          ),
+                        ),
                       ),
                     ),
                   );

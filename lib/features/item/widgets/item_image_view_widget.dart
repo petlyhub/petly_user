@@ -38,24 +38,29 @@ class ItemImageViewWidget extends StatelessWidget {
               }
             },
             child: Stack(children: [
-              SizedBox(
-                height: ResponsiveHelper.isDesktop(context)? 350: MediaQuery.of(context).size.width * 0.7,
-                child: PageView.builder(
-                  controller: _controller,
-                  itemCount: isCampaign ? imageListForCampaign.length : imageList.length,
-                  itemBuilder: (context, index) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CustomImage(
-                        image: '${isCampaign ? imageListForCampaign[index] : imageList[index]}',
-                        height: 200,
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                    );
-                  },
-                  onPageChanged: (index) {
-                    itemController.setImageSliderIndex(index);
-                  },
+              Material(
+                elevation: 8,
+                borderRadius: BorderRadius.circular(10),
+                child: SizedBox(
+                  height: ResponsiveHelper.isDesktop(context)? 350: MediaQuery.of(context).size.width * 0.7,
+                  child: PageView.builder(
+                    controller: _controller,
+                    itemCount: isCampaign ? imageListForCampaign.length : imageList.length,
+                    itemBuilder: (context, index) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: CustomImage(
+                          image: '${isCampaign ? imageListForCampaign[index] : imageList[index]}',
+                          height: 200,
+                          fit: BoxFit.fitHeight,
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                      );
+                    },
+                    onPageChanged: (index) {
+                      itemController.setImageSliderIndex(index);
+                    },
+                  ),
                 ),
               ),
               Positioned(

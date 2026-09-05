@@ -106,9 +106,12 @@ class ItemTitleViewWidget extends StatelessWidget {
                           showCustomSnackBar('you_are_not_logged_in'.tr);
                         }
                       },
-                      child: Icon(
-                        favouriteController.wishItemIdList.contains(itemController.item!.id) ? Icons.favorite : Icons.favorite_border, size: 25,
-                        color: Theme.of(context).primaryColor,
+                      child: Material(
+                        elevation: 8,
+                        child: Icon(
+                          favouriteController.wishItemIdList.contains(itemController.item!.id) ? Icons.favorite : Icons.favorite_border, size: 25,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     );
                   }
@@ -132,15 +135,19 @@ class ItemTitleViewWidget extends StatelessWidget {
           SizedBox(height: (itemController.item!.genericName != null && itemController.item!.genericName!.isNotEmpty) ? Dimensions.paddingSizeSmall : 0),
 
           Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
-              decoration: BoxDecoration(
-                color: inStock ? Colors.red.shade50 : Colors.green.shade50, borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+            Material(
+              elevation: 12,
+              color: Colors.transparent,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
+                decoration: BoxDecoration(
+                  color: inStock ? Colors.red.shade50 : Colors.green.shade50, borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                ),
+                child: Text(inStock ? 'out_of_stock'.tr : 'in_stock'.tr, style: robotoRegular.copyWith(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: Dimensions.fontSizeExtraSmall,
+                )),
               ),
-              child: Text(inStock ? 'out_of_stock'.tr : 'in_stock'.tr, style: robotoRegular.copyWith(
-                color: Theme.of(context).primaryColor,
-                fontSize: Dimensions.fontSizeExtraSmall,
-              )),
             ),
             const SizedBox(width: Dimensions.paddingSizeDefault),
 
@@ -319,15 +326,19 @@ class ItemTitleViewWidget extends StatelessWidget {
 
                 OrganicTag(item: item!, fromDetails: true),
 
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
-                  decoration: BoxDecoration(
-                    color: inStock ? Colors.red : Colors.green, borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                Material(
+                  elevation: 8,
+                  color: Colors.transparent,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
+                    decoration: BoxDecoration(
+                      color: inStock ? Colors.red : Colors.green, borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                    ),
+                    child: Text(inStock ? 'out_of_stock'.tr : 'in_stock'.tr, style: robotoRegular.copyWith(
+                      color: Colors.white,
+                      fontSize: Dimensions.fontSizeSmall,
+                    )),
                   ),
-                  child: Text(inStock ? 'out_of_stock'.tr : 'in_stock'.tr, style: robotoRegular.copyWith(
-                    color: Colors.white,
-                    fontSize: Dimensions.fontSizeSmall,
-                  )),
                 ),
               ]),
 

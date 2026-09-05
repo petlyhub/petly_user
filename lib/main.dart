@@ -68,7 +68,7 @@ Future<void> main() async {
         appId: "1:612192905439:android:48441549f576c1c349e16a",
         messagingSenderId: "612192905439",
         projectId: "petly-914b7",
-      ),
+      ),    
     );
   } else {
     await Firebase.initializeApp();
@@ -144,6 +144,7 @@ class _MyAppState extends State<MyApp> {
       Get.find<SplashController>().getConfigData(loadLandingData: (GetPlatform.isWeb && AddressHelper.getUserAddressFromSharedPref() == null), fromMainFunction: true);
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

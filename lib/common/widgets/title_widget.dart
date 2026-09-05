@@ -79,7 +79,7 @@ class TitleWidget extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Icon(
-                          ltr ? Icons.arrow_back_ios : Icons.arrow_forward_ios,
+                          ltr ? Icons.arrow_forward_ios : Icons.arrow_back_ios,
                           size: 12,
                           color: Theme.of(context).primaryColor,
                         ),

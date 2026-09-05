@@ -752,7 +752,7 @@ class CheckoutController extends GetxController implements GetxService {
 // }
         if (redirectLink != null && redirectLink.isNotEmpty) {
           print("Opening: $redirectLink");
-
+ 
           final launched = await launchUrl(
             Uri.parse(redirectLink),
             mode: LaunchMode.externalApplication,
@@ -761,7 +761,7 @@ class CheckoutController extends GetxController implements GetxService {
           Get.offAll(() => const DashboardScreen(
                 pageIndex: 0,       
                 fromSplash: false,
-         ));
+         ));  
          double total = ((amount / 100) *
             Get.find<SplashController>()
                 .configModel!

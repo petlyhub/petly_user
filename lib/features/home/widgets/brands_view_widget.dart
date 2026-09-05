@@ -34,19 +34,23 @@ class BrandsViewWidget extends StatelessWidget {
           ),
           itemCount: brandsController.brandList!.length > 8 ? 8 : brandsController.brandList!.length,
           itemBuilder: (context, index) {
-            return Container(
-              padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-              decoration: BoxDecoration(
-                color: Theme.of(context).disabledColor.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              ),
-              child: InkWell(
-                onTap: () => Get.toNamed(RouteHelper.getBrandsItemScreen(brandsController.brandList![index].id!, brandsController.brandList![index].name!)),
-                child: ClipRRect(
+            return Material(
+              elevation: 8,
+              borderRadius:BorderRadius.circular(Dimensions.radiusDefault),
+              child: Container(
+                padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).disabledColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                  child: CustomImage(
-                    image: '${brandsController.brandList![index].imageFullUrl}',
-                    height: 60, width: 60,
+                ),
+                child: InkWell(
+                  onTap: () => Get.toNamed(RouteHelper.getBrandsItemScreen(brandsController.brandList![index].id!, brandsController.brandList![index].name!)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                    child: CustomImage(
+                      image: '${brandsController.brandList![index].imageFullUrl}',
+                      height: 60, width: 60,
+                    ),
                   ),
                 ),
               ),
