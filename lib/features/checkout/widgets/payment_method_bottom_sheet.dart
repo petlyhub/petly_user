@@ -525,7 +525,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                                   fontSize: Dimensions
                                                       .fontSizeDefault),
                                               overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
+                                              maxLines: 1, 
                                             ),
                                             Row(
                                               spacing: 12,
