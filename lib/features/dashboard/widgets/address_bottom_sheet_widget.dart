@@ -290,26 +290,47 @@ class AddressBottomSheetWidget extends StatelessWidget {
                               )
                             : const SizedBox()
                         : const Center(child: CircularProgressIndicator()),
-                    SizedBox(
-                        height: addressController.addressList != null &&
-                                addressController.addressList!.isEmpty
-                            ? 0
-                            : Dimensions.paddingSizeSmall),
-                    addressController.addressList != null &&
-                            addressController.addressList!.isNotEmpty
-                        ? TextButton.icon(
-                            onPressed: () {
-                              Get.find<SplashController>()
-                                  .saveWebSuggestedLocationStatus(true);
-                              Get.toNamed(RouteHelper.getAddAddressRoute(
-                                  false, false, 0));
-                            },
-                            icon: const Icon(Icons.add_circle_outline_sharp),
-                            label: Text('add_new_address'.tr,
-                                style: robotoMedium.copyWith(
-                                    color: Theme.of(context).primaryColor)),
-                          )
-                        : const SizedBox(),
+                    // SizedBox(
+                    //     height: addressController.addressList != null &&
+                    //             addressController.addressList!.isEmpty
+                    //         ? 0
+                    //         : Dimensions.paddingSizeSmall),
+                    // addressController.addressList != null &&
+                    //         addressController.addressList!.isNotEmpty
+                        // ? TextButton.icon(
+                        //     onPressed: () {
+                        //       Get.find<SplashController>()
+                        //           .saveWebSuggestedLocationStatus(true);
+                        //       Get.toNamed(RouteHelper.getAddAddressRoute(
+                        //           false, false, 0));
+                        //     },
+                        //     icon: const Icon(Icons.add_circle_outline_sharp),
+                        //     label: Text('add_new_address'.tr,
+                        //         style: robotoMedium.copyWith(
+                        //             color: Theme.of(context).primaryColor)),
+                        //   )
+                        // ? TextButton.icon(
+                        //     onPressed: () {
+                        //       // 1. التحقق من وجود SplashController بـ أمان قبل استدعائه
+                        //       if (Get.isRegistered<SplashController>()) {
+                        //         Get.find<SplashController>()
+                        //             .saveWebSuggestedLocationStatus(true);
+                        //       }
+
+                        //       // 2. الانتقال إلى المسار المحدد
+                        //       Get.toNamed(
+                        //         RouteHelper.getAddAddressRoute(false, false, 0),
+                        //       );
+                        //     },
+                        //     icon: const Icon(Icons.add_circle_outline_sharp),
+                        //     label: Text(
+                        //       'add_new_address'.tr,
+                        //       style: robotoMedium.copyWith(
+                        //         color: Theme.of(context).primaryColor,
+                        //       ),
+                        //     ),
+                        //   )
+                        // : const SizedBox(),
                   ]),
             ),
           ),

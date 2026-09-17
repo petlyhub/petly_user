@@ -200,6 +200,10 @@ class AppConstants {
   static const String getPopularTaxiSuggestionUri = '/api/v1/rental/vehicle/popular-suggestion/';
   static const String getProviderBannerUri = '/api/v1/rental/banners';
 
+  // new Features Apis
+
+  static const String getPetTypes = '/api/v1/pet-types';
+
   /// Shared Key
   static const String theme = '6ammart_theme';
   static const String token = '6ammart_token';
@@ -227,6 +231,7 @@ class AppConstants {
   static const String referBottomSheet = '6ammart_reffer_bottomsheet_show';
   static const String dmRegisterSuccess = '6ammart_dm_registration_success';
   static const String isRestaurantRegister = '6ammart_store_registration';
+
 
   ///taxi
   static const String taxiSearchHistory = '6ammart_taxi_search_history';

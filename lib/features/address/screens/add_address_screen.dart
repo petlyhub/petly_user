@@ -87,36 +87,84 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   }
 
-  void initCall(){
+  // void initCall(){
 
+  //   Get.find<LocationController>().setAddressTypeIndex(0, isUpdate: false);
+  //   if(AuthHelper.isLoggedIn() && Get.find<ProfileController>().userInfoModel == null) {
+  //     Get.find<ProfileController>().getUserInfo();
+  //   }
+  //   if(widget.address == null) {
+  //     _initialPosition = LatLng(
+  //       double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lat ?? '0'),
+  //       double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lng ?? '0'),
+  //     );
+  //   }else {
+  //     Get.find<LocationController>().setUpdateAddress(widget.address!);
+  //     _initialPosition = LatLng(
+  //       double.parse(widget.address!.latitude ?? '0'),
+  //       double.parse(widget.address!.longitude ?? '0'),
+  //     );
+
+  //     if(widget.address!.addressType == 'home') {
+  //       Get.find<LocationController>().setAddressTypeIndex(0, isUpdate: false);
+  //     } else if (widget.address!.addressType == 'office') {
+  //       Get.find<LocationController>().setAddressTypeIndex(1, isUpdate: false);
+  //     } else {
+  //       Get.find<LocationController>().setAddressTypeIndex(2, isUpdate: false);
+  //       _levelController.text = widget.address!.addressType!;
+  //       _otherSelect = true;
+  //     }
+  //   }
+  // }
+void initCall() {
+  // 1. ضبط نوع العنوان الافتراضي
+  if (Get.isRegistered<LocationController>()) {
     Get.find<LocationController>().setAddressTypeIndex(0, isUpdate: false);
-    if(AuthHelper.isLoggedIn() && Get.find<ProfileController>().userInfoModel == null) {
-      Get.find<ProfileController>().getUserInfo();
-    }
-    if(widget.address == null) {
-      _initialPosition = LatLng(
-        double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lat ?? '0'),
-        double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lng ?? '0'),
-      );
-    }else {
-      Get.find<LocationController>().setUpdateAddress(widget.address!);
-      _initialPosition = LatLng(
-        double.parse(widget.address!.latitude ?? '0'),
-        double.parse(widget.address!.longitude ?? '0'),
-      );
+  }
 
-      if(widget.address!.addressType == 'home') {
-        Get.find<LocationController>().setAddressTypeIndex(0, isUpdate: false);
-      } else if (widget.address!.addressType == 'office') {
-        Get.find<LocationController>().setAddressTypeIndex(1, isUpdate: false);
-      } else {
-        Get.find<LocationController>().setAddressTypeIndex(2, isUpdate: false);
-        _levelController.text = widget.address!.addressType!;
-        _otherSelect = true;
-      }
+  // 2. تجلب بيانات المستخدم بأمان
+  if (AuthHelper.isLoggedIn() && Get.isRegistered<ProfileController>()) {
+    if (Get.find<ProfileController>().userInfoModel == null) {
+      Get.find<ProfileController>().getUserInfo();
     }
   }
 
+  // 3. التعامل مع إحداثيات الموقع الحالي أو العنوان الممرر
+  if (widget.address == null) {
+    // قراءة البيانات من SplashController بـ أمان دون استخدام !
+    final config = Get.isRegistered<SplashController>() 
+        ? Get.find<SplashController>().configModel 
+        : null;
+    
+    final lat = double.tryParse(config?.defaultLocation?.lat ?? '0') ?? 0.0;
+    final lng = double.tryParse(config?.defaultLocation?.lng ?? '0') ?? 0.0;
+
+    _initialPosition = LatLng(lat, lng);
+  } else {
+    final address = widget.address!;
+
+    if (Get.isRegistered<LocationController>()) {
+      Get.find<LocationController>().setUpdateAddress(address);
+    }
+
+    final lat = double.tryParse(address.latitude ?? '0') ?? 0.0;
+    final lng = double.tryParse(address.longitude ?? '0') ?? 0.0;
+    _initialPosition = LatLng(lat, lng);
+
+    // تحديث نوع العنوان بناءً على القيمة
+    final addressType = address.addressType ?? '';
+
+    if (addressType == 'home') {
+      Get.find<LocationController>().setAddressTypeIndex(0, isUpdate: false);
+    } else if (addressType == 'office') {
+      Get.find<LocationController>().setAddressTypeIndex(1, isUpdate: false);
+    } else {
+      Get.find<LocationController>().setAddressTypeIndex(2, isUpdate: false);
+      _levelController.text = addressType; // إزالة الـ ! لمنع الـ Null Exception
+      _otherSelect = true;
+    }
+  }
+}
   void splitPhoneNumber(String number) async {
     try {
       PhoneNumber phoneNumber = PhoneNumber.parse(number);

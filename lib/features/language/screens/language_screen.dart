@@ -30,7 +30,9 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
       appBar: (widget.fromMenu || ResponsiveHelper.isDesktop(context)) ? CustomAppBar(title: 'language'.tr, backButton: true) : null,
       endDrawer: const MenuDrawer(), endDrawerEnableOpenDragGesture: false,
       backgroundColor: Theme.of(context).cardColor,
-      body: GetBuilder<LocalizationController>(builder: (localizationController) {
+      body: 
+      
+      GetBuilder<LocalizationController>(builder: (localizationController) {
         return ResponsiveHelper.isDesktop(context) ? const WebLanguageScreen() : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const SizedBox(height: 40),
 

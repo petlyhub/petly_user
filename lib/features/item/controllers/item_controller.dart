@@ -202,7 +202,7 @@ class ItemController extends GetxController implements GetxService {
       _reviewedItemList = [];
       _reviewedCategoriesList = [];
       _reviewedItemList!.addAll(itemModel.items!);
-      _reviewedCategoriesList!.addAll(itemModel.categories!);
+    //  _reviewedCategoriesList!.addAll(itemModel.categories!);
       _isLoading = false;
     }
     update();

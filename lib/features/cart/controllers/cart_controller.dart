@@ -109,7 +109,8 @@ class CartController extends GetxController implements GetxService {
     bool haveVariation = false;
     for (var cartModel in cartList) {
 
-      isFoodVariation = ModuleHelper.getModuleConfig(cartModel.item!.moduleType).newVariation!;
+     // isFoodVariation = ModuleHelper.getModuleConfig(cartModel.item!.moduleType).newVariation!;
+      isFoodVariation = ModuleHelper.getModuleConfig(cartModel.item?.moduleType).newVariation ?? false;
       double? discount = cartModel.item!.storeDiscount == 0 ? cartModel.item!.discount : cartModel.item!.storeDiscount;
       String? discountType = cartModel.item!.storeDiscount == 0 ? cartModel.item!.discountType : 'percent';
 

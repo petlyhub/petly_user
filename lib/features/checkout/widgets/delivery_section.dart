@@ -45,22 +45,22 @@ class DeliverySection extends StatelessWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text('deliver_to'.tr, style: robotoMedium),
-            TextButton.icon(
-              onPressed: () async {
-                var address = await Get.toNamed(RouteHelper.getAddAddressRoute(true, false, checkoutController.store!.zoneId));
-                if(address != null) {
-                  checkoutController.getDistanceInKM(
-                    LatLng(double.parse(address.latitude), double.parse(address.longitude)),
-                    LatLng(double.parse(checkoutController.store!.latitude!), double.parse(checkoutController.store!.longitude!)),
-                  );
-                  checkoutController.streetNumberController.text = address.streetNumber ?? '';
-                  checkoutController.houseController.text = address.house ?? '';
-                  checkoutController.floorController.text = address.floor ?? '';
-                }
-              },
-              icon: const Icon(Icons.add, size: 20),
-              label: Text('add_new'.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall)),
-            ),
+            // TextButton.icon(
+            //   onPressed: () async {
+            //     var address = await Get.toNamed(RouteHelper.getAddAddressRoute(true, false, checkoutController.store!.zoneId));
+            //     if(address != null) {
+            //       checkoutController.getDistanceInKM(
+            //         LatLng(double.parse(address.latitude), double.parse(address.longitude)),
+            //         LatLng(double.parse(checkoutController.store!.latitude!), double.parse(checkoutController.store!.longitude!)),
+            //       );
+            //       checkoutController.streetNumberController.text = address.streetNumber ?? '';
+            //       checkoutController.houseController.text = address.house ?? '';
+            //       checkoutController.floorController.text = address.floor ?? '';
+            //     }
+            //   },
+            //   icon: const Icon(Icons.add, size: 20),
+            //   label: Text('add_new'.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall)),
+            // ),
           ]),
 
 

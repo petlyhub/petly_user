@@ -183,6 +183,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                 ])
                           : const SizedBox(),
                       Row(
+                        spacing: 12,
                         children: [
                         widget.isCashOnDeliveryActive && notHideCod
                             ? Expanded(
@@ -199,9 +200,9 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                     title: 'cash_on_delivery'.tr,
                                     isSelected:
                                         checkoutController.paymentMethodIndex ==
-                                            1,
+                                            0,
                                     onTap: () {
-                                      checkoutController.setPaymentMethod(1);
+                                      checkoutController.setPaymentMethod(0);
                                     },
                                   ),
                                 ),
@@ -225,11 +226,11 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                                     title: 'pay_via_wallet'.tr,
                                     isSelected:
                                         checkoutController.paymentMethodIndex ==
-                                            0,
+                                            1,
                                     onTap: () {
                                       if (canSelectWallet) {
                                         checkoutController.setPaymentMethod(
-                                          0,
+                                          1,
                                         );
                                         print(
                                             "Selected Index: ${checkoutController.paymentMethodIndex}");
@@ -336,89 +337,91 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                       //      : const SizedBox(),
                       // ]),
 
-                      Row(
-                        children: [
-                        widget.isCashOnDeliveryActive && notHideCod
-                            ? Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      right: widget.storeId == null &&
-                                              widget.isWalletActive &&
-                                              notHideWallet &&
-                                              isLoggedIn
-                                          ? Dimensions.paddingSizeSmall
-                                          : 0),
-                                  child: PaymentButtonNew(
-                                    icon: Images.codIcon,
-                                    title: 'cash_on_delivery'.tr,
-                                    isSelected:
-                                        checkoutController.paymentMethodIndex ==
-                                            0,
-                                    onTap: () {
-                                      checkoutController.setPaymentMethod(0);
-                                    },
-                                  ),
-                                ),
-                              )
-                            : const SizedBox(),
-                        // SizedBox(width: widget.storeId == null && widget.isWalletActive && notHideWallet && isLoggedIn ? 0 : Dimensions.paddingSizeLarge),
+                      // Row(
+                      //   children: [
+                      //   widget.isCashOnDeliveryActive && notHideCod
+                      //       ? Expanded(
+                      //           child: Padding(
+                      //             padding: EdgeInsets.only(
+                      //                 right: widget.storeId == null &&
+                      //                         widget.isWalletActive &&
+                      //                         notHideWallet &&
+                      //                         isLoggedIn
+                      //                     ? Dimensions.paddingSizeSmall
+                      //                     : 0),
+                      //             child: PaymentButtonNew(
+                      //               icon: Images.codIcon,
+                      //               title: 'cash_on_delivery'.tr,
+                      //               isSelected:
+                      //                   checkoutController.paymentMethodIndex ==
+                      //                       0,
+                      //               onTap: () {
+                      //                 checkoutController.setPaymentMethod(0);
+                      //               },
+                      //             ),
+                      //           ),
+                      //         )
+                      //       : const SizedBox(),
+                      //   // SizedBox(width: widget.storeId == null && widget.isWalletActive && notHideWallet && isLoggedIn ? 0 : Dimensions.paddingSizeLarge),
 
-                        // widget.storeId == null &&
-                        //         widget.isWalletActive &&
-                        //         notHideWallet &&
-                        //         isLoggedIn
-                        //     ? Expanded(
-                        //         child: Padding(
-                        //           padding: EdgeInsets.only(
-                        //               left: widget.isCashOnDeliveryActive &&
-                        //                       notHideCod
-                        //                   ? Dimensions.paddingSizeSmall
-                        //                   : 0),
-                        //           child: PaymentButtonNew(
-                        //             icon: Images.paymentTamara,
-                        //             title: 'pay via Tamara'.tr,
-                        //             isSelected:
-                        //                 checkoutController.paymentMethodIndex ==
-                        //                     3,
-                        //             onTap: () {
-                        //               checkoutController
-                        //                   .changeDigitalPaymentName('TAMARA');
-                        //               print("TAMARA CLICKED");
-                        //               checkoutController.setPaymentMethod(3);
+                      //   // widget.storeId == null &&
+                      //   //         widget.isWalletActive &&
+                      //   //         notHideWallet &&
+                      //   //         isLoggedIn
+                      //   //     ? Expanded(
+                      //   //         child: Padding(
+                      //   //           padding: EdgeInsets.only(
+                      //   //               left: widget.isCashOnDeliveryActive &&
+                      //   //                       notHideCod
+                      //   //                   ? Dimensions.paddingSizeSmall
+                      //   //                   : 0),
+                      //   //           child: PaymentButtonNew(
+                      //   //             icon: Images.paymentTamara,
+                      //   //             title: 'pay via Tamara'.tr,
+                      //   //             isSelected:
+                      //   //                 checkoutController.paymentMethodIndex ==
+                      //   //                     3,
+                      //   //             onTap: () {
+                      //   //               checkoutController
+                      //   //                   .changeDigitalPaymentName('TAMARA');
+                      //   //               print("TAMARA CLICKED");
+                      //   //               checkoutController.setPaymentMethod(3);
 
-                        //               if (canSelectWallet) {
-                        //                 checkoutController.setPaymentMethod(
-                        //                   1,
-                        //                 );
-                        //                 print(
-                        //                     "Selected Index: ${checkoutController.paymentMethodIndex}");
-                        //                 print(
-                        //                     "Selected Method: ${checkoutController.paymentMethodValue}");
-                        //               } else if (checkoutController
-                        //                   .isPartialPay) {
-                        //                 showCustomSnackBar(
-                        //                     'you_can_not_user_wallet_in_partial_payment'
-                        //                         .tr);
-                        //                 Get.back();
-                        //               } else {
-                        //                 print(
-                        //                     "Selected Index: ${checkoutController.paymentMethodIndex}");
-                        //                 print(
-                        //                     "Selected Method: ${checkoutController.paymentMethodValue}");
-                        //                 showCustomSnackBar(
-                        //                     '${checkoutController.paymentMethodIndex}'
-                        //                         .tr);
-                        //                 // showCustomSnackBar(
-                        //                 //     'your_wallet_have_not_sufficient_balance'
-                        //                 //         .tr);
-                        //                 Get.back();
-                        //               }
-                        //             },
-                        //           ),
-                        //         ),
-                        //       )
-                        //     : const SizedBox(),
-                      ]),
+                      //   //               if (canSelectWallet) {
+                      //   //                 checkoutController.setPaymentMethod(
+                      //   //                   1,
+                      //   //                 );
+                      //   //                 print(
+                      //   //                     "Selected Index: ${checkoutController.paymentMethodIndex}");
+                      //   //                 print(
+                      //   //                     "Selected Method: ${checkoutController.paymentMethodValue}");
+                      //   //               } else if (checkoutController
+                      //   //                   .isPartialPay) {
+                      //   //                 showCustomSnackBar(
+                      //   //                     'you_can_not_user_wallet_in_partial_payment'
+                      //   //                         .tr);
+                      //   //                 Get.back();
+                      //   //               } else {
+                      //   //                 print(
+                      //   //                     "Selected Index: ${checkoutController.paymentMethodIndex}");
+                      //   //                 print(
+                      //   //                     "Selected Method: ${checkoutController.paymentMethodValue}");
+                      //   //                 showCustomSnackBar(
+                      //   //                     '${checkoutController.paymentMethodIndex}'
+                      //   //                         .tr);
+                      //   //                 // showCustomSnackBar(
+                      //   //                 //     'your_wallet_have_not_sufficient_balance'
+                      //   //                 //         .tr);
+                      //   //                 Get.back();
+                      //   //               }
+                      //   //             },
+                      //   //           ),
+                      //   //         ),
+                      //   //       )
+                      //   //     : const SizedBox(),
+                      // ]),
+                      
+                      
                       const SizedBox(height: Dimensions.paddingSizeLarge),
                       widget.isDigitalPaymentActive && notHideDigital
                           ? Row(

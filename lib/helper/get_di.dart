@@ -137,6 +137,8 @@ import 'package:sixam_mart/features/payment/domain/repositories/payement_reposit
 import 'package:sixam_mart/features/payment/domain/repositories/payment_repository_interface.dart';
 import 'package:sixam_mart/features/payment/domain/services/payment_service.dart';
 import 'package:sixam_mart/features/payment/domain/services/payment_service_interface.dart';
+import 'package:sixam_mart/features/pet_types/controllers/pet_type_controller.dart';
+import 'package:sixam_mart/features/pet_types/domain/repository/pet_type_repository.dart';
 import 'package:sixam_mart/features/petly_animals/controllers/pet_controller.dart';
 import 'package:sixam_mart/features/profile/controllers/profile_controller.dart';
 import 'package:sixam_mart/features/profile/domain/repositories/profile_repository.dart';
@@ -605,6 +607,11 @@ Get.put(PetController());
   Get.lazyPut(() => TaxiOrderController(taxiOrderServiceInterface: Get.find()));
   Get.lazyPut(
       () => TaxiFavouriteController(taxiFavouriteServiceInterface: Get.find()));
+ 
+      // new Features get dis
+     // في ملف get_di.dart
+    Get.lazyPut(() => PetTypeRepository());
+    Get.lazyPut(() => PetTypeController(petTypeRepository: Get.find()));
 
   /// Retrieving localized data
   Map<String, Map<String, String>> languages = {};

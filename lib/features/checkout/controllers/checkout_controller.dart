@@ -559,7 +559,7 @@ class CheckoutController extends GetxController implements GetxService {
     _isLoading = false;
     if (response.statusCode == 200) {
       String? message = response.body['message'];
-      String paymentID = response.body['payment_id'];
+      String? paymentID = response.body['payment_id'].toString();
       String? redirectLink = response.body['redirect_link']; 
       orderID = response.body['order_id'].toString();
       // Debug print: order placed

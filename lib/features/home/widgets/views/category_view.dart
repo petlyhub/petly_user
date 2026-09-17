@@ -44,62 +44,151 @@ class _CategoryViewState extends State<CategoryView> {
           return const SizedBox();
         }
 
-        return SizedBox(
-          height: 280.h,
-          child: GridView.builder(
-            controller: _scrollController,
-            scrollDirection: Axis.horizontal,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 0,
-              crossAxisSpacing: 0,
-              childAspectRatio: 1.1,
-            ),
-            itemCount: categories.length,
-            physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
-            itemBuilder: (context, index) {
-              final cat = categories[index];
-              final name = cat.name ?? '';
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 4.h),
-                child: InkWell(
-                  onTap: () {
-                    Get.toNamed(RouteHelper.getCategoryItemRoute(cat.id, name));
-                  },
-                  borderRadius: BorderRadius.circular(16.r),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        height: 90.h,
-                        width: 90.w,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(14.r),
-                          child: CustomImage(
-                            image: cat.imageFullUrl ?? '',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                  SizedBox(height: 5.h),
-                      Text(
-                        name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: robotoBold.copyWith(fontSize: 11.sp),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+        // return SizedBox(
+        //   height: 280.h,
+        //   child: GridView.builder(
+        //     controller: _scrollController,
+        //     scrollDirection: Axis.horizontal,
+        //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        //       crossAxisCount: 2,
+        //       mainAxisSpacing: 0,
+        //       crossAxisSpacing: 0,
+        //       childAspectRatio: 1.1,
+        //     ),
+        //     itemCount: categories.length,
+        //     physics: const BouncingScrollPhysics(),
+        //     padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
+        //     itemBuilder: (context, index) {
+        //       final cat = categories[index];
+        //       final name = cat.name ?? '';
+        //       return Padding(
+        //         padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 4.h),
+        //         child: InkWell(
+        //           onTap: () {
+        //             Get.toNamed(RouteHelper.getCategoryItemRoute(cat.id, name));
+        //           },
+        //           borderRadius: BorderRadius.circular(16.r),
+        //           child: Column(
+        //             mainAxisSize: MainAxisSize.min,
+        //             children: [
+        //               SizedBox(
+        //                 height: 65.h,
+        //                 width: 65.w,
+        //                 child: ClipRRect(
+        //                   borderRadius: BorderRadius.circular(40.r),
+        //                   child: CustomImage(
+        //                     image: cat.imageFullUrl ?? '',
+        //                     fit: BoxFit.cover,
+        //                   ),
+        //                 ),
+        //               ),
+        //           SizedBox(height: 5.h),
+        //               Text(
+        //                 name,
+        //                 maxLines: 2,
+        //                 overflow: TextOverflow.ellipsis,
+        //                 style: robotoBold.copyWith(fontSize: 11.sp),
+        //                 textAlign: TextAlign.center,
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       );
+        //     },
+        //   ),
+        // );
+    return  SizedBox(
+  height: 115.h, // ارتفاع مناسب لعرض العنصر والنص أسفله فقط
+  child: SingleChildScrollView(
+    controller: _scrollController,
+    scrollDirection: Axis.horizontal,
+    physics: const BouncingScrollPhysics(),
+    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+    child: Row(
+      children: categories.map((cat) {
+        final name = cat.name ?? '';
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 6.w),
+          child: InkWell(
+            onTap: () {
+              Get.toNamed(RouteHelper.getCategoryItemRoute(cat.id, name));
+            },
+            borderRadius: BorderRadius.circular(16.r),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: 65.h,
+                  width: 65.w,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(40.r),
+                    child: CustomImage(
+                      image: cat.imageFullUrl ?? '',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              );
-            },
+                SizedBox(height: 5.h),
+                SizedBox(
+                  width: 70.w, // عرض محدد للتحكم في محاذاة النص وعدد الأسطر
+                  child: Text(
+                    name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: robotoBold.copyWith(fontSize: 11.sp),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
+      }).toList(),
+    ),
+  ),
+);
       });
     });
   }
+  Widget _buildCategoryItem(dynamic cat) {
+  final name = cat.name ?? '';
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
+    child: InkWell(
+      onTap: () {
+        Get.toNamed(RouteHelper.getCategoryItemRoute(cat.id, name));
+      },
+      borderRadius: BorderRadius.circular(16.r),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 65.h,
+            width: 65.w,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(40.r),
+              child: CustomImage(
+                image: cat.imageFullUrl ?? '',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SizedBox(height: 5.h),
+          SizedBox(
+            width: 70.w, // تحديد عرض النص حتى يعرض السطرين بشكل متناسق
+            child: Text(
+              name,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: robotoBold.copyWith(fontSize: 11.sp),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
 }
 
 // نفس كلاس الشيمر بلا تعديل

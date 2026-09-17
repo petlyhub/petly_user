@@ -97,12 +97,17 @@ Future<void> main() async {
     );
   }
 
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
   runApp(ScreenUtilInit(
     designSize: const Size(375, 812),
     minTextAdapt: true,
     splitScreenMode: true,
     builder: (context, child) => MyApp(languages: languages, body: body),
   ));
+  });
 }
 
 class MyApp extends StatefulWidget {
